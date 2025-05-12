@@ -3,5 +3,5 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  enum role: { trainee: 0, trainer: 1 }
+  enum :role, { trainee: 0, trainer: 1 }
 end
