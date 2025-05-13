@@ -10,18 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_12_234027) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_13_014108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
-
-  create_table "trainee_trainers", force: :cascade do |t|
-    t.bigint "trainee_id", null: false
-    t.bigint "trainer_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["trainee_id"], name: "index_trainee_trainers_on_trainee_id"
-    t.index ["trainer_id"], name: "index_trainee_trainers_on_trainer_id"
-  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -37,6 +28,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_234027) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "trainee_trainers", "users", column: "trainee_id"
-  add_foreign_key "trainee_trainers", "users", column: "trainer_id"
+  create_table "workout_days", force: :cascade do |t|
+    t.bigint "workout_id", null: false
+    t.integer "weekday"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["workout_id"], name: "index_workout_days_on_workout_id"
+  end
+
+  create_table "workouts", force: :cascade do |t|
+    t.string "name"
+    t.date "start_date"
+    t.date "end_date"
+    t.bigint "created_by_id", null: false
+    t.bigint "assigned_to_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assigned_to_id"], name: "index_workouts_on_assigned_to_id"
+    t.index ["created_by_id"], name: "index_workouts_on_created_by_id"
+  end
+
+  add_foreign_key "workout_days", "workouts"
+  add_foreign_key "workouts", "users", column: "assigned_to_id"
+  add_foreign_key "workouts", "users", column: "created_by_id"
 end
