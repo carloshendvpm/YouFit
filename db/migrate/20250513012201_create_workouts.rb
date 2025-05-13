@@ -4,8 +4,8 @@ class CreateWorkouts < ActiveRecord::Migration[8.0]
       t.string :name
       t.date :start_date
       t.date :end_date
-      t.references :created_by, null: false, foreign_key: true
-      t.references :assigned_to, null: false, foreign_key: true
+      t.references :created_by, null: false, foreign_key: { to_table: :users }
+      t.references :assigned_to, null: false, foreign_key: { to_table: :users }
 
       t.timestamps
     end
